@@ -1,10 +1,19 @@
 import '@/env';
 import config from '@/config';
+import colors from '@/constants/colors';
 import DiscordService from '@/services/discordService';
 import TickerService from '@/services/tickerService';
 import logger from '@/tools/logger';
 import { isNil } from 'lodash';
 
+if (config.botToken === '' || config.botToken === '') {
+	logger.error({
+		file: 'index.js',
+		method: 'init',
+		message: 'Config Missing!'
+	});
+	process.exit(1);
+}
 const bot = new DiscordService(config.botToken);
 const ticker = new TickerService(config.exchange);
 
@@ -15,9 +24,9 @@ const _getTicker = async (callback) => {
 
 		if (!isNil(price)) {
 			const lastPrice = ticker.getLastPrice();
-			let color = '#2A9D8F';
+			let color = colors.green;
 			if (!isNil(lastPrice) && price < lastPrice) {
-				color = '#EF5350';
+				color = colors.red;
 			}
 
 			embed = DiscordService.makeEmbed(`${ticker.getExchange().toUpperCase()} - EUR/USD`, color, [
@@ -26,7 +35,7 @@ const _getTicker = async (callback) => {
 		} else {
 			embed = DiscordService.makeEmbed(
 				`${ticker.getExchange().toUpperCase()} - EUR/USD`,
-				'#EF5350',
+				colors.red,
 				[{ name: 'Price', value: 'NO PRICE' }]
 			);
 		}
@@ -39,7 +48,7 @@ const _getTicker = async (callback) => {
 		});
 		const embed = DiscordService.makeEmbed(
 			`${ticker.getExchange().toUpperCase()} - EUR/USD`,
-			'#EF5350',
+			colors.red,
 			[{ name: 'ERROR', value: `${error}` }]
 		);
 		callback.channel.send(embed);
@@ -51,21 +60,21 @@ const _setExchange = (ex, callback) => {
 	let embed = null;
 	const exchange = ticker.setExchange(ex);
 	if (!isNil(exchange)) {
-		embed = DiscordService.makeEmbed(`Exchange set to: ${exchange.toUpperCase()}`, '#2A9D8F');
+		embed = DiscordService.makeEmbed(`Exchange set to: ${exchange.toUpperCase()}`, colors.green);
 	} else {
-		embed = DiscordService.makeEmbed(`Unsuported Exchange: ${ex}`, '#2A9D8F');
+		embed = DiscordService.makeEmbed(`Unsuported Exchange: ${ex}`, colors.red);
 	}
 	callback.channel.send(embed);
 };
 
 const _getExchange = (callback) => {
 	const exchange = ticker.getExchange();
-	const embed = DiscordService.makeEmbed(`Exchange is: ${exchange.toUpperCase()}`, '#2A9D8F');
+	const embed = DiscordService.makeEmbed(`Exchange is: ${exchange.toUpperCase()}`, colors.green);
 	callback.channel.send(embed);
 };
 
 const _unsupportedCommand = (command, callback) => {
-	const embed = DiscordService.makeEmbed(`Unsuported Command: ${command}`, '#EF5350');
+	const embed = DiscordService.makeEmbed(`Unsuported Command: ${command}`, colors.red);
 	callback.channel.send(embed);
 };
 

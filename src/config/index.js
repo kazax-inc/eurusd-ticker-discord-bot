@@ -1,5 +1,4 @@
 const getConfig = () => ({
-	port: process.env.PORT,
 	botToken: process.env.BOT_TOKEN,
 	prefix: process.env.PREFIX,
 	command: process.env.CMD,
