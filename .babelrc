@@ -1,0 +1,36 @@
+{
+  "comments": false,
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "14.15.1"
+        }
+      }
+    ],
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-runtime"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "node": "14.15.1"
+            }
+          }
+        ],
+        "stage-0"
+      ],
+      "plugins": [
+        "transform-runtime",
+        "istanbul"
+      ]
+    }
+  }
+}

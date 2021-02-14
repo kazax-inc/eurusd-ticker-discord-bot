@@ -1,0 +1,52 @@
+{
+	"name": "price-ticker-discord-bot",
+	"version": "0.1.0",
+	"description": "Price Ticker Discord Bot",
+	"author": "Kazax",
+	"private": true,
+	"scripts": {
+		"build": "node -r dotenv/config build/build.js && cp package.json dist/package.json && npm run build:post && npm run build:artifact",
+		"build:post": "cd dist && npm i --ignore-scripts --production && cd ..",
+		"build:artifact": "cd dist && bestzip ../dist.zip ./* && cd ..",
+		"build:migrations": "webpack --config=build/migrations.js",
+		"server": "cross-env node -r dotenv/config build/run.js",
+		"format": "prettier --config ./.prettierrc --write \"./**/*.js\" && eslint --fix --ext .js src",
+		"lint": "eslint --ext .js src",
+		"lintFix": "eslint --fix --ext .js src",
+		"postinstall": "node -r dotenv/config ./scripts/postinstall.js"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"discord.js": "^12.5.1",
+		"lodash": "^4.17.15",
+		"source-map-support": "^0.5.11",
+		"winston": "^3.3.3"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^10.0.1",
+		"babel-loader": "^7.1.4",
+		"babel-plugin-istanbul": "^5.1.1",
+		"babel-plugin-transform-object-rest-spread": "^6.26.0",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"babel-preset-env": "^1.7.0",
+		"babel-preset-stage-0": "^6.24.1",
+		"bestzip": "^2.1.2",
+		"chalk": "^2.4.2",
+		"cross-env": "^5.2.0",
+		"dotenv": "^8.2.0",
+		"eslint": "^5.15.3",
+		"eslint-config-airbnb-base": "^13.1.0",
+		"eslint-import-resolver-webpack": "^0.11.0",
+		"eslint-plugin-import": "^2.13.0",
+		"eslint-plugin-local-rules": "^0.1.0",
+		"fs-extra": "^7.0.1",
+		"prettier": "1.16.4",
+		"rimraf": "^3.0.2",
+		"webpack": "^4.29.6",
+		"webpack-cli": "^3.3.0",
+		"webpack-merge": "^4.2.1",
+		"webpack-node-externals": "^1.7.2",
+		"webpack-strip-block": "^0.2.0"
+	}
+}
